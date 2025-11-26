@@ -24,6 +24,7 @@ class AttendanceTracker:
         if not self.students:
             print("⚠️ No students registered yet!")
             return
+            
         today = str(datetime.date.today())
         self.attendance[today] = {}
 
@@ -38,3 +39,69 @@ class AttendanceTracker:
                     print("❌ Invalid input! Enter 'P' for Present or 'A' for Absent.")
 
         print("✅ Attendance marked successfully!")
+
+    # ------------------------------
+    # VIEW REPORTS
+    #-------------------------------
+    def view_report(self):
+        if not self.attendance:
+            print("⚠️ No attendance records yet.")
+            return
+
+        print("\n===== Attendance Report =====")
+        for date, records in self.attendance.items():
+            print(f"\n📅 Date: {date}")
+            for name, status in records.items():
+                print(f" - {name}: {status}")
+
+ # ----------------------------
+    # VIEW ATTENDANCE PERCENTAGE
+    # ----------------------------
+    def attendance_summary(self):
+        if not self.attendance:
+            print("⚠️ No attendance data available.")
+            return
+
+        total_days = len(self.attendance)
+        print("\n===== Attendance Summary =====")
+        for student in self.students:
+            present_days = sum(
+                1 for date in self.attendance if self.attendance[date].get(student) == "P"
+            )
+            percentage = (present_days / total_days) * 100
+            print(f"{student}: {present_days}/{total_days} days present ({percentage:.1f}%)")
+
+    # ----------------------------
+    # FILE HANDLING (SAVE/LOAD)
+    # ----------------------------
+    def save_data(self):
+        with open("attendance_data.csv", "w", newline="") as file:
+            writer = csv.writer(file)
+            writer.writerow(["Date", "Student", "Status"])
+            for date, records in self.attendance.items():
+                for name, status in records.items():
+                    writer.writerow([date, name, status])
+        with open("students.csv", "w", newline="") as file:
+            writer = csv.writer(file)
+            for s in self.students:
+                writer.writerow([s])
+        print("💾 Data saved successfully!")
+
+    def load_data(self):
+        try:
+            with open("students.csv", "r") as file:
+                reader = csv.reader(file)
+                self.students = [row[0] for row in reader if row]
+        except FileNotFoundError:
+            self.students = []
+
+        try:
+            with open("attendance_data.csv", "r") as file:
+                reader = csv.DictReader(file)
+                for row in reader:
+                    date, name, status = row["Date"], row["Student"], row["Status"]
+                    if date not in self.attendance:
+                        self.attendance[date] = {}
+                    self.attendance[date][name] = status
+        except FileNotFoundError:
+            self.attendance = {}
