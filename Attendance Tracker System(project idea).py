@@ -7,9 +7,7 @@ class AttendanceTracker:
         self.attendance = {}  # date: {student: "P"/"A"}
         self.load_data()
 
-    # ----------------------------
     # STUDENT MANAGEMENT
-    # ----------------------------
     def add_student(self, name):
         if name not in self.students:
             self.students.append(name)
@@ -17,9 +15,7 @@ class AttendanceTracker:
         else:
             print("⚠️ Student already exists!")
 
-    # ----------------------------
     # ATTENDANCE MARKING
-    # ----------------------------
     def mark_attendance(self):
         if not self.students:
             print("⚠️ No students registered yet!")
@@ -40,9 +36,7 @@ class AttendanceTracker:
 
         print("✅ Attendance marked successfully!")
 
-    # ------------------------------
     # VIEW REPORTS
-    #-------------------------------
     def view_report(self):
         if not self.attendance:
             print("⚠️ No attendance records yet.")
@@ -54,9 +48,7 @@ class AttendanceTracker:
             for name, status in records.items():
                 print(f" - {name}: {status}")
 
- # ----------------------------
     # VIEW ATTENDANCE PERCENTAGE
-    # ----------------------------
     def attendance_summary(self):
         if not self.attendance:
             print("⚠️ No attendance data available.")
@@ -71,9 +63,7 @@ class AttendanceTracker:
             percentage = (present_days / total_days) * 100
             print(f"{student}: {present_days}/{total_days} days present ({percentage:.1f}%)")
 
-    # ----------------------------
     # FILE HANDLING (SAVE/LOAD)
-    # ----------------------------
     def save_data(self):
         with open("attendance_data.csv", "w", newline="") as file:
             writer = csv.writer(file)
@@ -105,3 +95,35 @@ class AttendanceTracker:
                     self.attendance[date][name] = status
         except FileNotFoundError:
             self.attendance = {}
+# MAIN MENU
+def run(self):
+        while True:
+            print("\n===== Attendance Tracker Menu =====")
+            print("1. Add Student")
+            print("2. Mark Attendance")
+            print("3. View Attendance Report")
+            print("4. View Attendance Summary")
+            print("5. Save & Exit")
+
+            choice = input("Enter your choice: ")
+
+            if choice == "1":
+                name = input("Enter student name: ").strip().title()
+                self.add_student(name)
+            elif choice == "2":
+                self.mark_attendance()
+            elif choice == "3":
+                self.view_report()
+            elif choice == "4":
+                self.attendance_summary()
+            elif choice == "5":
+                self.save_data()
+                print("👋 Exiting program. Goodbye!")
+                break
+            else:
+                print("❌ Invalid choice! Please select between 1–5.")
+                
+# Run the program
+if __name__ == "__main__":
+    system = AttendanceTracker()
+    system.run()
