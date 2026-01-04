@@ -1,3 +1,4 @@
+# Why the run method is defined outside the AttendanceTracker class, but you called it as system.run(). I guess you will generate AttributeErroe.
 import csv
 import datetime
 
@@ -127,3 +128,4 @@ def run(self):
 if __name__ == "__main__":
     system = AttendanceTracker()
     system.run()
+
